@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.huzdi.project.MainActivity">
+
+<TextView
+    android:id="@+id/text"
+    android:layout_margin="70dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="40sp"
+    android:text="Change your life now."/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_below="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_account"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:layout_margin="30dp"/>
+    <TextView
+        android:id="@+id/text1"
+        android:padding="10sp"
+        android:text="If you dont have already an account"
+        android:layout_above="@id/button1"
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="70dp"
+        android:paddingLeft="70dp"
+        android:paddingEnd="70dp"/>
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="If you have already an account"
+        android:paddingStart="80dp"
+        android:paddingLeft="80dp"
+        android:paddingEnd="70dp"
+        android:paddingRight="70dp"
+        android:layout_below="@id/button1"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button1"
+        android:layout_margin="30dp"
+        android:textSize="25sp"
+        android:text="@string/login"
+        android:textAllCaps="false"/>
+
+</RelativeLayout>
