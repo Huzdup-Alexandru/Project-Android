@@ -3,18 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <EditText
+    android:id="@+id/email_login"
     android:layout_width="match_parent"
+    android:inputType="textEmailAddress"
     android:layout_height="wrap_content"
     android:hint="@string/username"/>
     <EditText
+        android:id="@+id/password_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="@string/password"/>
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/remember"/>
     <Button
+        android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"/>
