@@ -39,40 +39,45 @@ public class MainRegister extends Activity {
         setContentView(R.layout.register);
         mAuth = FirebaseAuth.getInstance();
 
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText)findViewById(R.id.password1);
-        register = (Button)findViewById(R.id.register);
-
-
-
-
     }
-
-
-
 
     @Override
     public void onStart() {
         super.onStart();
+        register = findViewById(R.id.register);
         currentUser = mAuth.getCurrentUser();
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                create();
+            }
+        });
+    }
+
+
+        public void create() {
+            email = findViewById(R.id.email);
+            password = findViewById(R.id.password1);
+
         String email_string = email.getText().toString();
         String password_string = password.getText().toString();
-
         mAuth.createUserWithEmailAndPassword(email_string, password_string).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-           if(task.isSuccessful()){
-               Log.d(TAG, "createUserWithEmail:success");
-               FirebaseUser user = mAuth.getCurrentUser();
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "createUserWithEmail:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
 
-           } else {
-               Log.w(TAG,"creatUserWithEmail:failure",task.getException());
-               Toast.makeText(MainRegister.this,"Authentication failed",Toast.LENGTH_LONG).show();
-           }
+                } else {
+                    Log.w(TAG, "creatUserWithEmail:failure", task.getException());
+                    Toast.makeText(MainRegister.this, "Authentication failed", Toast.LENGTH_LONG).show();
+                }
             }
-        });
 
+        });
+        }
 
     }
 
-}
+
+
