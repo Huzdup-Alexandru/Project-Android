@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/eco"
+    android:tag="0"
     tools:context="com.example.huzdi.projectv1.Fragments.EcologistFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ProgressBar
 
+        android:progressDrawable="@drawable/custom_progressbar"
         android:max="1000"
         android:layout_margin="15dp"
         android:layout_gravity="top"
@@ -20,14 +22,13 @@
          />
     <TextView
 
-
         android:id="@+id/textView_eco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
 
-
+        android:drawableLeft="@drawable/checkicon"
         android:text="@string/complete_small"
         android:drawableBottom="@color/colorPrimaryDark"
         android:id="@+id/button_eco"
@@ -42,6 +43,7 @@
 
     <Button
 
+        android:drawableLeft="@drawable/check_icon"
         android:text="@string/complete_big"
         android:id="@+id/button2_eco"
         style="@style/Widget.AppCompat.Button.Colored"

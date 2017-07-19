@@ -20,7 +20,7 @@ public  class SampleAdapter extends FragmentPagerAdapter {
 
     public static final int NUM_ITEMS = 4;
     private String[] tabTitles = new String[]{"Ecologist Tab","Entertaining Tab","Knowledge Tab","Sportive Tab"};
-    private int[] tabIcons = {R.drawable.eco,R.drawable.know,R.drawable.sport,R.drawable.entertaining};
+
 
     public SampleAdapter(FragmentManager fm) {
         super(fm);
@@ -31,13 +31,13 @@ public  class SampleAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return EcologistFragment.newInstance("ecologist","page 1");
+                return EcologistFragment.newInstance("ecologist","Page 1");
             case 1:
-                return FunnyFragment.newInstance("funny","Page 2");
+                return SportiveFragment.newInstance("sportive","Page 2");
             case 2:
                 return KnowledgeFragment.newInstance("knowledge","Page 3");
             case 3:
-                return SportiveFragment.newInstance("sportive","Page 4");
+                return FunnyFragment.newInstance("sportive","Page 4");
             default:
                 return null;
         }

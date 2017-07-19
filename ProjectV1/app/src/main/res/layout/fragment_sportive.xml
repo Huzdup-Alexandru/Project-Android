@@ -4,9 +4,11 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@drawable/sport"
+    android:tag="3"
     tools:context="com.example.huzdi.projectv1.Fragments.SportiveFragment">
 
     <ProgressBar
+        android:progressDrawable="@drawable/custom_progressbar"
         android:max="1000"
         android:layout_margin="15dp"
         android:layout_gravity="top"
@@ -22,6 +24,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/checkicon"
         android:text="@string/complete_small"
         android:id="@+id/button_sport"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -33,6 +36,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/check_icon"
         android:text="@string/complete_big"
         android:id="@+id/button2_sport"
         style="@style/Widget.AppCompat.Button.Colored"

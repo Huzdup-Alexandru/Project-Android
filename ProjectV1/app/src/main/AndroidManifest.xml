@@ -3,7 +3,7 @@
     package="com.example.huzdi.projectv1">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".StartActivity" />
-        <activity android:name="Fragments.PagerStrip"></activity>
+        <activity android:name="Fragments.PagerStrip" />
+        <activity android:name=".BrainTrainerActivity"></activity>
     </application>
 
 </manifest>

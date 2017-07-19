@@ -4,11 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/entertaining"
+    android:tag="1"
     tools:context="com.example.huzdi.projectv1.Fragments.FunnyFragment">
 
 
 
     <ProgressBar
+        android:progressDrawable="@drawable/custom_progressbar"
         android:max="1000"
         android:layout_margin="15dp"
         android:layout_gravity="top"
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/checkicon"
         android:text="@string/complete_small"
         android:id="@+id/button_fun"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -35,6 +38,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/check_icon"
         android:text="@string/complete_big"
         android:id="@+id/button2_fun"
         style="@style/Widget.AppCompat.Button.Colored"

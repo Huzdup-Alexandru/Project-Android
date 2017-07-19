@@ -8,6 +8,8 @@
     tools:context="com.example.huzdi.projectv1.Register">
     <EditText
 
+        android:gravity="center"
+        android:drawableLeft="@drawable/username_icon"
         android:inputType="textEmailAddress"
         android:id="@+id/edit_register"
         android:layout_width="match_parent"
@@ -15,6 +17,8 @@
         android:hint="Email"/>
 
     <EditText
+        android:gravity="center"
+        android:drawableLeft="@drawable/password_icon"
         android:hint="Password"
         android:id="@+id/edit2_register"
         android:layout_width="match_parent"
@@ -27,6 +31,6 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Create new account" />
 
 </LinearLayout>

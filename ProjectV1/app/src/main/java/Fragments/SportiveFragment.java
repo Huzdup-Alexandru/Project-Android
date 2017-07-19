@@ -4,13 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.huzdi.projectv1.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -27,9 +37,18 @@ public class SportiveFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    TextView textView;
+    TextView textView2;
+
     Button button;
     Button button2;
     ProgressBar progressBar;
+
+    ArrayList<String> textsBig= new ArrayList<>();
+    ArrayList<String> textsSmall = new ArrayList<>();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,7 +92,12 @@ public class SportiveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        readDataFromDatabaseSmall();
+        readDataFromDatabaseBig();
         View rowView = inflater.inflate(R.layout.fragment_sportive, container, false);
+
+        textView = rowView.findViewById(R.id.textView_sport);
+        textView2 = rowView.findViewById(R.id.textView2_sport);
 
         button = rowView.findViewById(R.id.button_sport);
         button2 = rowView.findViewById(R.id.button2_sport);
@@ -93,6 +117,18 @@ public class SportiveFragment extends Fragment {
         });
 
         return rowView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Random random = new Random();
+        for(int i = 0; i<textsBig.size();i++){
+            textView.setText(textsBig.get(random.nextInt(textsBig.size())));
+        }
+        for(int i = 0; i<textsSmall.size();i++){
+            textView2.setText(textsSmall.get(random.nextInt(textsSmall.size())));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -133,5 +169,45 @@ public class SportiveFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void readDataFromDatabaseBig(){
+        myRef =  database.getReference("Sportive").child("Big");
+        myRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
+                    Log.d("TAG","Values is " + clubkey);
+                    textsBig.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+
+    public void readDataFromDatabaseSmall(){
+        myRef =  database.getReference("Sportive").child("Small");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
+                    Log.d("TAG","Values is " + clubkey);
+                    textsSmall.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
     }
 }

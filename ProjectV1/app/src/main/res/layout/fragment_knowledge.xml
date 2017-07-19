@@ -4,11 +4,13 @@
     android:orientation="vertical"
     android:background="@drawable/know"
     android:layout_height="match_parent"
+    android:tag="2"
     tools:context="com.example.huzdi.projectv1.Fragments.KnowledgeFragment">
 
 
     <!-- TODO: Update blank fragment layout -->
     <ProgressBar
+        android:progressDrawable="@drawable/custom_progressbar"
         android:max="1000"
         android:layout_margin="15dp"
         android:layout_gravity="top"
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/checkicon"
         android:text="@string/complete_small"
         android:id="@+id/button_know"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -34,6 +37,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:drawableLeft="@drawable/check_icon"
         android:text="@string/complete_big"
         android:id="@+id/button2_know"
         style="@style/Widget.AppCompat.Button.Colored"

@@ -1,16 +1,28 @@
 package Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.huzdi.projectv1.R;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -24,12 +36,23 @@ import com.example.huzdi.projectv1.R;
 public class KnowledgeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "know1";
+    private static final String ARG_PARAM2 = "know2";
+
+    FirebaseUser user;
+
+    TextView textView;
+    TextView textView2;
 
     Button button;
     Button button2;
     ProgressBar progressBar;
+
+    ArrayList<String> textsBig = new ArrayList<>();
+    ArrayList<String> textsSmall = new ArrayList<>();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,21 +85,36 @@ public class KnowledgeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setProgress();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        readDataFromDatabaseBig();
+        readDataFromDatabaseSmall();
         View rowView= inflater.inflate(R.layout.fragment_knowledge, container, false);
+
+        textView = rowView.findViewById(R.id.textView_know);
+        textView2 = rowView.findViewById(R.id.textView2_know);
 
         button = rowView.findViewById(R.id.button_know);
         button2 = rowView.findViewById(R.id.button2_know);
         progressBar = rowView.findViewById(R.id.progressBar_know);
+
+
+
+        Intent in = getActivity().getIntent();
+        in.getStringExtra("data");
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +136,18 @@ public class KnowledgeFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Random random = new Random();
+        for(int i = 0; i<textsBig.size();i++){
+            textView.setText(textsBig.get(random.nextInt(textsBig.size())));
+        }
+        for(int i = 0; i<textsSmall.size();i++){
+            textView2.setText(textsSmall.get(random.nextInt(textsSmall.size())));
         }
     }
 
@@ -131,5 +181,71 @@ public class KnowledgeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void readDataFromDatabaseBig(){
+        myRef =  database.getReference("Knowledge").child("Big");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
+                    Log.d("TAG","Values is " + clubkey);
+                    textsBig.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+    public void readDataFromDatabaseSmall(){
+        myRef =  database.getReference("Knowledge").child("Small");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
+                    Log.d("TAG","Values is " + clubkey);
+                    textsSmall.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+    public void setProgress(){
+
+
+
+        myRef = database.getReference("Progress");
+        myRef.addValueEventListener(new ValueEventListener() {
+
+            long d;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    d = (long) childSnaphot.getValue();
+
+                }
+                int i = (int) d;
+                progressBar.setProgress(i);
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

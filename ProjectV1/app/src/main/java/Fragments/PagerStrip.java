@@ -20,7 +20,7 @@ KnowledgeFragment.OnFragmentInteractionListener, SportiveFragment.OnFragmentInte
 
     FragmentPagerAdapter adapterViewPager;
     ViewPager viewPager;
-    Fragment mContent;
+
 
 
 
@@ -31,8 +31,10 @@ KnowledgeFragment.OnFragmentInteractionListener, SportiveFragment.OnFragmentInte
         setContentView(R.layout.activity_pager_strip);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new SampleAdapter(getSupportFragmentManager()));
-      adapterViewPager = new SampleAdapter(getSupportFragmentManager());
+        adapterViewPager = new SampleAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
+
+
 
 
 
@@ -66,6 +68,7 @@ KnowledgeFragment.OnFragmentInteractionListener, SportiveFragment.OnFragmentInte
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
+
         return super.onCreateView(name, context, attrs);
     }
 

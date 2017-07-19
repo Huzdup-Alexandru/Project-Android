@@ -1,10 +1,13 @@
 package Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +17,15 @@ import android.widget.TextView;
 
 import com.example.huzdi.projectv1.R;
 import com.example.huzdi.projectv1.StartActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -33,18 +43,23 @@ public class EcologistFragment extends Fragment {
     Button button;
     Button button2;
     TextView textView;
+    TextView textView2;
+
+    ArrayList<String> texts= new ArrayList<>();
+    ArrayList<String> textsSmall = new ArrayList<>();
 
 
-//    FirebaseDatabase database = FirebaseDatabase.getInstance();
-//    DatabaseReference myRef = database.getReference("Ecologist").child("Big");
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef ;
 
 
     Map<Object,Object> myMap;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "eco1";
+    private static final String ARG_PARAM2 = "eco2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,19 +88,19 @@ public class EcologistFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
 
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        readDataFromDatabase();
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
-
         }
+
     }
 
     @Override
@@ -93,9 +108,13 @@ public class EcologistFragment extends Fragment {
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         startActivity = new StartActivity();
+        readDataFromDatabaseBig();
+        readDataFromDatabaseSmall();
 
         View rootView = inflater.inflate(R.layout.fragment_ecologist, container, false);
 
+
+        textView2 = rootView.findViewById(R.id.textView2_eco);
         textView = rootView.findViewById(R.id.textView_eco);
         button =  rootView.findViewById(R.id.button_eco);
         button2 = rootView.findViewById(R.id.button2_eco);
@@ -106,8 +125,7 @@ public class EcologistFragment extends Fragment {
 
             public void onClick(View view) {
                progressBar.setProgress(progressBar.getProgress() + 10);
-//                Object club = startActivity.getClubkey();
-//                textView.setText(club.toString());
+
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +148,15 @@ public class EcologistFragment extends Fragment {
 
     @Override
     public void onStart() {
-
         super.onStart();
+        Random random = new Random();
+        for(int i = 0; i<texts.size();i++){
+            textView.setText(texts.get(random.nextInt(texts.size())));
+        }
+        for(int i = 0; i<textsSmall.size();i++){
+            textView2.setText(textsSmall.get(random.nextInt(textsSmall.size())));
+        }
+
 
 
     }
@@ -182,29 +207,46 @@ public class EcologistFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-//    public void readDataFromDatabase(){
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
-//                    clubkey = childSnaphot.getValue();
+
+
+    public void readDataFromDatabaseBig(){
+        myRef =  database.getReference("Ecologist").child("Big");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
 //                    Log.d("TAG","Values is " + clubkey);
-//                    String ddd = clubkey.toString();
-//
-//
-//
-//
-//                }
-////                Object value = dataSnapshot.getKey(Object.class);
-////                Log.d("TAG","Values is " + clubkey);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("TAG", "Failed to read value.", databaseError.toException());
-//            }
-//        });
-//    }
+                    texts.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+    public void readDataFromDatabaseSmall(){
+        myRef =  database.getReference("Ecologist").child("Small");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnaphot : dataSnapshot.getChildren()){
+                    String clubkey = childSnaphot.getValue().toString();
+//                    Log.d("TAG","Values is " + clubkey);
+                    textsSmall.add(clubkey);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
 
 }
 
