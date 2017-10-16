@@ -12,6 +12,31 @@
         android:hint="WRITE YOUR MESSAGE"
         android:gravity="top"/>
 
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/in_date" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select date"
+        android:id="@+id/btn_date" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/in_time" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select time"
+        android:id="@+id/btn_time" />
+
+
+
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
