@@ -36,6 +36,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+
         ((RadioButton) findViewById(R.id.radButton1)).setChecked(true);
         mPriority = 1;
 
@@ -46,11 +47,13 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View view) {
-        if(view == btnDatePicker){
+        if (view == btnDatePicker) {
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
@@ -97,20 +100,28 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     public void onClickAddTask(View view) {
 
         String input = ((EditText) findViewById(R.id.editTextTaskDescription)).getText().toString();
+        String task = ((EditText) findViewById(R.id.editTaskName)).getText().toString();
+
         if (input.length() == 0) {
             return;
         }
 
+        String date = Integer.toString(mDay) + "/" + Integer.toString(mMonth) + "/" + Integer.toString(mYear);
+        String hour = Integer.toString(mHour) + ":" + Integer.toString(mMinute);
+
 
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(TaskContract.TaskEntry.COLUMN_TASK, task);
         contentValues.put(TaskContract.TaskEntry.DESCRIPTION, input);
         contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, mPriority);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_DATE, date);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_HOUR, hour);
 
         Uri uri = getContentResolver().insert(TaskContract.TaskEntry.CONTENT_URI, contentValues);
 
 
-        if(uri != null) {
+        if (uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
 
@@ -120,10 +131,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    /**
-     * onPrioritySelected is called whenever a priority button is clicked.
-     * It changes the value of mPriority based on the selected button.
-     */
     public void onPrioritySelected(View view) {
         if (((RadioButton) findViewById(R.id.radButton1)).isChecked()) {
             mPriority = 1;

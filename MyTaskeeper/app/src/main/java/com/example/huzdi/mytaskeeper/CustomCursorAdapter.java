@@ -14,10 +14,6 @@ import android.widget.TextView;
 import com.example.huzdi.mytaskeeper.database.TaskContract;
 
 
-/**
- * This CustomCursorAdapter creates and binds ViewHolders, that hold the description and priority of a task,
- * to a RecyclerView to efficiently display data.
- */
 public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.TaskViewHolder> {
 
     // Class variables for the Cursor that holds task data and the Context
@@ -25,21 +21,11 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     private Context mContext;
 
 
-    /**
-     * Constructor for the CustomCursorAdapter that initializes the Context.
-     *
-     * @param mContext the current Context
-     */
     public CustomCursorAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
 
-    /**
-     * Called when ViewHolders are created to fill a RecyclerView.
-     *
-     * @return A new TaskViewHolder that holds the view for each task
-     */
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -51,31 +37,37 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
 
-    /**
-     * Called by the RecyclerView to display data at a specified position in the Cursor.
-     *
-     * @param holder The ViewHolder to bind Cursor data to
-     * @param position The position of the data in the Cursor
-     */
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
 
         int idIndex = mCursor.getColumnIndex(TaskContract.TaskEntry._ID);
+        int taskIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_TASK);
         int descriptionIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.DESCRIPTION);
         int priorityIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY);
+        int dateIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DATE);
+        int hourIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_HOUR);
+
 
         mCursor.moveToPosition(position);
 
         final int id = mCursor.getInt(idIndex);
+        String task = mCursor.getString(taskIndex);
         String description = mCursor.getString(descriptionIndex);
         int priority = mCursor.getInt(priorityIndex);
+        String date = mCursor.getString(dateIndex);
+        String hour = mCursor.getString(hourIndex);
 
         holder.itemView.setTag(id);
+        holder.taskName.setText(task);
         holder.taskDescriptionView.setText(description);
 
 
         String priorityString = "" + priority;
         holder.priorityView.setText(priorityString);
+
+        holder.dateTextView.setText(date);
+        holder.hourTextView.setText(hour);
+
 
         GradientDrawable priorityCircle = (GradientDrawable) holder.priorityView.getBackground();
         int priorityColor = getPriorityColor(priority);
@@ -84,26 +76,26 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
 
-
     private int getPriorityColor(int priority) {
         int priorityColor = 0;
 
-        switch(priority) {
-            case 1: priorityColor = ContextCompat.getColor(mContext, R.color.materialRed);
+        switch (priority) {
+            case 1:
+                priorityColor = ContextCompat.getColor(mContext, R.color.materialRed);
                 break;
-            case 2: priorityColor = ContextCompat.getColor(mContext, R.color.materialOrange);
+            case 2:
+                priorityColor = ContextCompat.getColor(mContext, R.color.materialOrange);
                 break;
-            case 3: priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
+            case 3:
+                priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
                 break;
-            default: break;
+            default:
+                break;
         }
         return priorityColor;
     }
 
 
-    /**
-     * Returns the number of items to display.
-     */
     @Override
     public int getItemCount() {
         if (mCursor == null) {
@@ -111,7 +103,6 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         }
         return mCursor.getCount();
     }
-
 
 
     public Cursor swapCursor(Cursor c) {
@@ -130,23 +121,25 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
 
-
     class TaskViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView taskDescriptionView;
         TextView priorityView;
+        TextView dateTextView;
+        TextView hourTextView;
+        TextView taskName;
 
-        /**
-         * Constructor for the TaskViewHolders.
-         *
-         * @param itemView The view inflated in onCreateViewHolder
-         */
+
         public TaskViewHolder(View itemView) {
             super(itemView);
 
-            taskDescriptionView = (TextView) itemView.findViewById(R.id.taskDescription);
-            priorityView = (TextView) itemView.findViewById(R.id.priorityTextView);
+            taskName = itemView.findViewById(R.id.taskName);
+            taskDescriptionView = itemView.findViewById(R.id.taskDescription);
+            priorityView = itemView.findViewById(R.id.priorityTextView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
+            hourTextView = itemView.findViewById(R.id.hourTextView);
+
         }
     }
 }

@@ -1,7 +1,11 @@
 package com.example.huzdi.mytaskeeper.database;
 
+import android.content.ContentValues;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import java.util.Date;
 
 /**
  * Created by huzdi on 23.10.2017.
@@ -18,6 +22,9 @@ public class TaskContract {
         public static final String TABLE_NAME = "tasks";
         public static final String DESCRIPTION = "description";
         public static final String COLUMN_PRIORITY = "priority";
+        public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_HOUR = "hour";
+        public static final String COLUMN_TASK = "task";
 
 
     }

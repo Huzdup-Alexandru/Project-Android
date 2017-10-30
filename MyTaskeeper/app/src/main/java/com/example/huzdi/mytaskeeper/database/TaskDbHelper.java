@@ -12,7 +12,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "taskDb.db";
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 6;
 
 
     TaskDbHelper(Context context) {
@@ -21,10 +21,14 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
         final String CREATE_TABLE = "CREATE TABLE " + TaskContract.TaskEntry.TABLE_NAME + " (" +
-                TaskContract.TaskEntry._ID  + " INTEGER PRIMARY KEY, " +
-                TaskContract.TaskEntry.DESCRIPTION + " TEXT NOT NULL, " +
-                TaskContract.TaskEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);";
+                TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY, " +
+                TaskContract.TaskEntry.COLUMN_TASK + " TEXT NOT NULL, " +
+                TaskContract.TaskEntry.DESCRIPTION + " TEXT, " +
+                TaskContract.TaskEntry.COLUMN_PRIORITY + " INTEGER NOT NULL, " +
+                TaskContract.TaskEntry.COLUMN_DATE + " TEXT, " +
+                TaskContract.TaskEntry.COLUMN_HOUR + " TEXT);";
 
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
