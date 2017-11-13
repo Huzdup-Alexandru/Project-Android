@@ -123,7 +123,24 @@ public class TaskContentProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
+        int tasksUpdated;
+
+        switch (match){
+            case TASKS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                tasksUpdated = db.update(TaskContract.TaskEntry.TABLE_NAME,contentValues,"_id=?",new String[]{id});
+                break;
+                default:
+                    throw new UnsupportedOperationException("Unknown uri " + uri);
+        }
+        if(tasksUpdated != 0){
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+        return tasksUpdated;
     }
 
     @Nullable

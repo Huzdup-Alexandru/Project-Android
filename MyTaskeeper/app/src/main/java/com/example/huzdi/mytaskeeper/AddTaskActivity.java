@@ -1,8 +1,12 @@
 package com.example.huzdi.mytaskeeper;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,12 +57,11 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        final Calendar c = Calendar.getInstance();
         if (view == btnDatePicker) {
-            final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
-
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     new DatePickerDialog.OnDateSetListener() {
@@ -66,6 +69,10 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
+                            mYear = year;
+                            mMonth = monthOfYear;
+                            mDay = dayOfMonth;
+
 
                             txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
@@ -76,7 +83,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         if (view == btnTimePicker) {
 
             // Get Current Time
-            final Calendar c = Calendar.getInstance();
             mHour = c.get(Calendar.HOUR_OF_DAY);
             mMinute = c.get(Calendar.MINUTE);
 
@@ -88,12 +94,69 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute) {
 
+                            mMinute = minute;
+                            mHour = hourOfDay;
+
                             txtTime.setText(hourOfDay + ":" + minute);
                         }
                     }, mHour, mMinute, false);
+
+            setAlarm(c.getTimeInMillis());
             timePickerDialog.show();
 
+
         }
+
+
+    }
+
+    private void setAlarm(long timeInMillis) {
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, MyReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 1000, pendingIntent);
+
+        Toast.makeText(this, "Alarm is set!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
+    }
+
+    public void onClickUpdateTask(View view) {
+        String input = ((EditText) findViewById(R.id.editTextTaskDescription)).getText().toString();
+        String task = ((EditText) findViewById(R.id.editTaskName)).getText().toString();
+
+        if (input.length() == 0) {
+            return;
+        }
+
+        String date = Integer.toString(mDay) + "/" + Integer.toString(mMonth) + "/" + Integer.toString(mYear);
+        String hour = Integer.toString(mHour) + ":" + Integer.toString(mMinute);
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.get(TaskContract.TaskEntry.COLUMN_TASK);
+
+        contentValues.put(TaskContract.TaskEntry.DESCRIPTION, input);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, mPriority);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_DATE, date);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_HOUR, hour);
+
+        int id = (int) view.getId();
+        String stringId = Integer.toString(id);
+        Uri uri = TaskContract.TaskEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(stringId).build();
+
+
     }
 
 
@@ -124,7 +187,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         if (uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
-
 
         finish();
 

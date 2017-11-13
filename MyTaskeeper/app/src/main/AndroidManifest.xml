@@ -20,7 +20,7 @@
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="true" >
         </receiver>
 
         <activity android:name=".AddTaskActivity"/>

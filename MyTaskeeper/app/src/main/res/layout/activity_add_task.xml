@@ -121,5 +121,11 @@
         android:text="ADD TASK"
         android:id="@+id/addButton"
         android:onClick="onClickAddTask"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/updateButton"
+        android:text="update"/>
 
 </LinearLayout>

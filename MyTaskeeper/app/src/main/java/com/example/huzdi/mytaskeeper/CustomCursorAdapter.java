@@ -2,6 +2,7 @@ package com.example.huzdi.mytaskeeper;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.example.huzdi.mytaskeeper.database.TaskContract;
@@ -33,8 +35,12 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.task_layout, parent, false);
 
+
         return new TaskViewHolder(view);
+
     }
+
+
 
 
     @Override
@@ -73,7 +79,19 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         int priorityColor = getPriorityColor(priority);
         priorityCircle.setColor(priorityColor);
 
+        holder.taskName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),AddTaskActivity.class);
+                view.getContext().startActivity(intent);
+
+            }
+        });
+
+
     }
+
+
 
 
     private int getPriorityColor(int priority) {
